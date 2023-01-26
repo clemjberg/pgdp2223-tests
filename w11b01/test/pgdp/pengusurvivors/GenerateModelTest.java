@@ -75,7 +75,20 @@ public class GenerateModelTest {
         int maxPairs = graph.computeMaxFlowValue();
         assertEquals(3, maxPairs);
     }
+    
+    @Test
+    public void FlowGraphNotCalculated() {
+        int[] workaholics = {1, 2, 3};
+        int[] procrastinators = {1, 2, 3};
+        int[][] friendships = {{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}, {2, 2}};
+        FlowGraph graph = PenguSurvivors.generateModel(workaholics, procrastinators, friendships);
+        
+        FlowGraph.Vertex source = graph.getSource();
+        for (FlowGraph.Vertex neigh : source.getSuccessors()) {
+            assertEquals(0, source.getEdge(neigh).getFlow(), "Der erstellte FlowGraph darf nicht computeMaxFlow() ausgeführt haben");
+        }
 
-
-
+        int i = graph.computeMaxFlowValue();
+        assertEquals(3, i);
+    }
 }
